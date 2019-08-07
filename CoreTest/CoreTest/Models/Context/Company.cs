@@ -15,20 +15,17 @@ namespace CoreTest.Models.Context
         [Column(Order = 1, TypeName = "INT")]
         int Id { get; set; }
 
-        [Column(Order = 2, TypeName = "VARCHAR")]
-        [StringLength(50)]
+        [Column(Order = 2, TypeName = "VARCHAR(50)")]
         string NameCompany { get; set; }
 
-        [Column(Order = 3, TypeName = "VARCHAR")]
-        [StringLength(50)]
+        [Column(Order = 3, TypeName = "VARCHAR(50)")]
         string BusinessBranch { get; set; }
 
-        [Column(Order = 4, TypeName = "VARCHAR")]
-        [StringLength(50)]
-        string Email { get; set; }
+        [Required]
+        [Column(TypeName = "VARCHAR(50)")]
+        public string Email { get; set; }
 
-        [Column(Order = 5, TypeName = "VARCHAR")]
-        [StringLength(15)]
+        [Column(Order = 5, TypeName = "VARCHAR(15)")]
         string Phone { get; set; }
 
         [Column(Order = 6, TypeName = "FLOAT")]
