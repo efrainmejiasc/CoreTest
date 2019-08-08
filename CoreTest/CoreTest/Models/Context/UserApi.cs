@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace CoreTest.Models.Context
 {
-    [Table("Company")]
-    public class Company
+    [Table("UserApi")]
+    public class UserApi
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,22 +16,12 @@ namespace CoreTest.Models.Context
         public int Id { get; set; }
 
         [Column(Order = 2, TypeName = "VARCHAR(50)")]
-        public string NameCompany { get; set; }
-
-        [Column(Order = 3, TypeName = "VARCHAR(50)")]
-        public string BusinessBranch { get; set; }
-
-        [Required]
-        [Column(TypeName = "VARCHAR(50)")]
         public string Email { get; set; }
 
-        [Column(Order = 5, TypeName = "VARCHAR(15)")]
-        public string Phone { get; set; }
+        [Column(Order = 3, TypeName = "VARCHAR(200)")]
+        public string Password { get; set; }
 
-        [Column(Order = 6, TypeName = "FLOAT")]
-        public float AnnualGross { get; set; }
-
-        [Column(Order = 7, TypeName = "DATETIME")]
+        [Column(Order = 5, TypeName = "DATETIME")]
         public DateTime CreateDate { get; set; }
     }
 }

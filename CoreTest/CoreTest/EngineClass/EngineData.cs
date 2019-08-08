@@ -21,5 +21,12 @@ namespace CoreTest.EngineClass
         public static string DefaultConnection { get; set; }
 
         public static string UrlBase { get; set; }
+
+        public static string JwtKey { get; set; }
+
+        public static string JwtIssuer{ get; set; }
+
+        public static string JwtAudience{ get; set; }
+
     }
 }
