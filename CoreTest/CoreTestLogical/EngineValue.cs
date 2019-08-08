@@ -21,5 +21,6 @@ namespace CoreTestLogical
         public static string passwordDiferente = "los passwords son diferentes";
         public static string falloCrearUsuario = "error al crear usuario";
         public static string exitoCrearUsuario = "usuario creado exitosamente";
+        public static string Login = "User/Login";
     }
 }

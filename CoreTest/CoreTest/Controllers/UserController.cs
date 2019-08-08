@@ -39,8 +39,9 @@ namespace CoreTest.Controllers
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (user.Email == string.Empty || user.Password == string.Empty)
             {
-                response.Content = new StringContent(EngineValue.modeloImcompleto);
-                return response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response.Content = new StringContent(EngineValue.modeloImcompleto,Encoding.Unicode);
+                return response;
             }
                
             EngineLogical Funcion = new EngineLogical();
@@ -48,15 +49,22 @@ namespace CoreTest.Controllers
             resultado = Funcion.EmailEsValido(user.Email);
             if (!resultado)
             {
-                response.Content = new StringContent(EngineValue.emailNoValido);
-                return response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response.Content = new StringContent(EngineValue.emailNoValido, Encoding.Unicode);
+                return response;
             }
             EngineDb Metodo = new EngineDb();
             resultado = Metodo.UserCreate(user,context);
             if (!resultado)
-                response.Content = new StringContent(EngineValue.falloCrearUsuario);
+            {
+                response.Content = new StringContent(EngineValue.falloCrearUsuario, Encoding.Unicode);
+            }
             else
-                response.Content = new StringContent(EngineValue.exitoCrearUsuario);
+            {
+                response.Content = new StringContent(EngineValue.exitoCrearUsuario, Encoding.Unicode);
+                response.Headers.Location = new Uri(EngineData.UrlBase + EngineValue.Login);
+            }
+               
 
             return response;
         }
