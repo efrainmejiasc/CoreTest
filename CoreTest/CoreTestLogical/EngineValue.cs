@@ -20,7 +20,8 @@ namespace CoreTestLogical
         public static string emailNoValido = "email no valido";
         public static string passwordDiferente = "los passwords son diferentes";
         public static string falloCrearUsuario = "error al crear usuario";
-        public static string exitoCrearUsuario = "usuario creado exitosamente";
+        public static string transaccionExitosa = "transaccion exitosa";
+        public static string noExisteUsuario = "no existe usuario";
         public static string Login = "User/Login";
     }
 }

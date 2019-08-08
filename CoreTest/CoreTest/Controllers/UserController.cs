@@ -61,7 +61,7 @@ namespace CoreTest.Controllers
             }
             else
             {
-                response.Content = new StringContent(EngineValue.exitoCrearUsuario, Encoding.Unicode);
+                response.Content = new StringContent(EngineValue.transaccionExitosa, Encoding.Unicode);
                 response.Headers.Location = new Uri(EngineData.UrlBase + EngineValue.Login);
             }
                
@@ -108,6 +108,32 @@ namespace CoreTest.Controllers
               signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        //[Authorize]
+        [HttpPut]
+        [ActionName("UpdateUser")]
+        [Route("UpdateUser")]
+        public HttpResponseMessage UpdateUser ([FromBody] UserApi user)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            if (user.Email == string.Empty || user.Password == string.Empty)
+            {
+                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
+                return response;
+            }
+            EngineDb Metodo = new EngineDb();
+            bool resultado = Metodo.PutPasswordUser(user,context);
+            if (!resultado)
+            {
+                response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                response.Content = new StringContent(EngineValue.noExisteUsuario, Encoding.Unicode);
+                return response;
+            }
+
+            response.Content = new StringContent(EngineValue.transaccionExitosa, Encoding.Unicode);
+            return response;
         }
 
     }

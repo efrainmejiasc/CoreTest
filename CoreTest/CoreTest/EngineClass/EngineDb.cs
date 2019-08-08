@@ -3,6 +3,7 @@ using CoreTest.Models.System;
 using CoreTestLogical;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,9 +26,7 @@ namespace CoreTest.EngineClass
                 }
                 resultado = true;
             }
-            catch (Exception ex)
-            {
-            }
+            catch  { }
             return resultado;
         }
 
@@ -45,6 +44,29 @@ namespace CoreTest.EngineClass
             }
             catch { }
             return null;
+        }
+   
+        public bool PutPasswordUser (UserApi user,EngineContext context)
+        {
+            bool resultado = false;
+            UserApi model = null;
+            try
+            {
+                using (context)
+                {
+                    model = context.UserApi.Where(s => s.Email == user.Email).FirstOrDefault();
+                    if(model != null)
+                    {
+                        EngineLogical Funcion = new EngineLogical();
+                        string password64 = Funcion.ConvertirBase64(user.Email + user.Password);
+                        model.Password = password64;
+                        context.SaveChanges();
+                        resultado = true;
+                    }
+                }
+            }
+            catch (Exception ex) { }
+            return resultado;
         }
     }
 }
