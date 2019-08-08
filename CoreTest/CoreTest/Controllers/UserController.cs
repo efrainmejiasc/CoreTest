@@ -101,20 +101,47 @@ namespace CoreTest.Controllers
                                new Claim(JwtRegisteredClaimNames.UniqueName, Guid.NewGuid().ToString())
             };
 
-              var token = new JwtSecurityToken(EngineData.JwtKey,
-              EngineData.JwtIssuer,
-              claims: KClaims,
-              expires: DateTime.UtcNow.AddMinutes(5),
-              signingCredentials: credentials);
+              var token = new JwtSecurityToken(
+                              EngineData.JwtIssuer, 
+                              EngineData.JwtAudience,
+                              claims: KClaims,
+                              expires: DateTime.UtcNow.AddMinutes(5),
+                              signingCredentials: credentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpPut]
         [ActionName("UpdateUser")]
         [Route("UpdateUser")]
-        public HttpResponseMessage UpdateUser ([FromBody] UserApi user)
+        public HttpResponseMessage UpdateUser ([FromBody] Client user)
+        {
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            if (user.Email == string.Empty || user.Password == string.Empty || user.NewPassword == string.Empty)
+            {
+                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
+                return response;
+            }
+            EngineDb Metodo = new EngineDb();
+            bool resultado = Metodo.PutPasswordUser(user,context);
+            if (!resultado)
+            {
+                response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                response.Content = new StringContent(EngineValue.noExisteUsuario, Encoding.Unicode);
+                return response;
+            }
+
+            response.Content = new StringContent(EngineValue.transaccionExitosa, Encoding.Unicode);
+            return response;
+        }
+
+        [Authorize]
+        [HttpDelete]
+        [ActionName("DeleteUser")]
+        [Route("DeleteUser")]
+        public HttpResponseMessage DeleteUser([FromBody] UserApi user)
         {
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (user.Email == string.Empty || user.Password == string.Empty)
@@ -124,7 +151,7 @@ namespace CoreTest.Controllers
                 return response;
             }
             EngineDb Metodo = new EngineDb();
-            bool resultado = Metodo.PutPasswordUser(user,context);
+            bool resultado = Metodo.DeleteUser(user, context);
             if (!resultado)
             {
                 response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);

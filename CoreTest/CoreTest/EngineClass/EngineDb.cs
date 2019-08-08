@@ -46,26 +46,51 @@ namespace CoreTest.EngineClass
             return null;
         }
    
-        public bool PutPasswordUser (UserApi user,EngineContext context)
+        public bool PutPasswordUser (Client user,EngineContext context)
         {
             bool resultado = false;
-            UserApi model = null;
+            UserApi usuarioApi = null;
+            EngineLogical Funcion = new EngineLogical();
+            string password64 = Funcion.ConvertirBase64(user.Email + user.Password);
             try
             {
                 using (context)
                 {
-                    model = context.UserApi.Where(s => s.Email == user.Email).FirstOrDefault();
-                    if(model != null)
+                    usuarioApi = context.UserApi.Where(s => s.Password == password64).FirstOrDefault();
+                    if(usuarioApi != null)
                     {
-                        EngineLogical Funcion = new EngineLogical();
-                        string password64 = Funcion.ConvertirBase64(user.Email + user.Password);
-                        model.Password = password64;
+                        string newPassword64 = Funcion.ConvertirBase64(user.Email + user.NewPassword);
+                        usuarioApi.Password = newPassword64;
                         context.SaveChanges();
                         resultado = true;
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch { }
+            return resultado;
+        }
+
+        public bool DeleteUser(UserApi user, EngineContext context)
+        {
+            bool resultado = false;
+            UserApi usuarioApi = null;
+            EngineLogical Funcion = new EngineLogical();
+            string password = Funcion.ConvertirBase64(user.Email + user.Password);
+            try
+            {
+                using (context)
+                {
+                    usuarioApi= context.UserApi.Where(s => s.Password == password).FirstOrDefault();
+                    if (usuarioApi != null)
+                    {
+                        context.UserApi.Attach(usuarioApi);
+                        context.UserApi.Remove(usuarioApi);
+                        context.SaveChanges();
+                        resultado = true;
+                    }
+                }
+            }
+            catch { }
             return resultado;
         }
     }
