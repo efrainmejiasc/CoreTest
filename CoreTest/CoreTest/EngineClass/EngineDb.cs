@@ -107,7 +107,7 @@ namespace CoreTest.EngineClass
                     context.Company.Add(client);
                     context.SaveChanges();
                     int id = client.Id;
-                    if (client.Subsidiary.Count > 0)
+                    if (client.Subsidiary != null)
                     {
                         foreach(Subsidiary item in client.Subsidiary)
                         {
@@ -119,7 +119,7 @@ namespace CoreTest.EngineClass
                 }
                 resultado = true;
             }
-            catch { }
+            catch {}
             return resultado;
         }
 

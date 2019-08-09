@@ -16,9 +16,8 @@ namespace CoreTest.Models.Context
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
-            builder.Entity<UserApi>(entity => {
-                entity.HasIndex(e => e.Email).IsUnique();
-            });
+            builder.Entity<UserApi>(entity => {entity.HasIndex(e => e.Email).IsUnique(); });
+            builder.Entity<Company>(entity => { entity.HasIndex(e => e.Email).IsUnique(); });
         }
 
         public DbSet<UserApi> UserApi { get; set; }
