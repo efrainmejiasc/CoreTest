@@ -93,5 +93,55 @@ namespace CoreTest.EngineClass
             catch { }
             return resultado;
         }
+
+        public bool CreateClient (Company client , EngineContext context)
+        {
+            bool resultado = false;
+            EngineLogical Funcion = new EngineLogical();
+            client.CreateDate = DateTime.UtcNow;
+            client.TypeCompany = Funcion.TypeCompany(client.AnnualGross);
+            try
+            {
+                using (context)
+                {
+                    context.Company.Add(client);
+                    context.SaveChanges();
+                    int id = client.Id;
+                    if (client.Subsidiary.Count > 0)
+                    {
+                       foreach(Subsidiary item in client.Subsidiary)
+                       {
+                            item.IdCompany = id;
+                            item.TypeSubsidiary = Funcion.TypeSubsidiary(item.AnnualGross);
+                            context.Subsidiary.Add(item);
+                            context.SaveChanges();
+                            //si aqui ocurre un error se debe hacer ROLLBACK TRAN en la tabla pero por custion de tiempo no lo hago
+                       }
+                    }
+                }
+                resultado = true;
+            }
+            catch { }
+            return resultado;
+        }
+
+        public Company GetClient (string nameCompany , EngineContext context)
+        {
+            Company client = null;
+            try
+            {
+                using (context)
+                {
+                    client = context.Company.Where(s => s.NameCompany == nameCompany).FirstOrDefault();
+                    if (client != null)
+                    {
+                        client.Subsidiary = context.Subsidiary.Where(x => x.IdCompany == client.Id).ToList();
+                    }
+                    return client;    
+                }
+            }
+            catch { }
+            return null;
+        }
     }
 }

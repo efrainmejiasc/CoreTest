@@ -39,7 +39,7 @@ namespace CoreTest.Controllers
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (user.Email == string.Empty || user.Password == string.Empty)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 response.Content = new StringContent(EngineValue.modeloImcompleto,Encoding.Unicode);
                 return response;
             }
@@ -49,7 +49,7 @@ namespace CoreTest.Controllers
             resultado = Funcion.EmailEsValido(user.Email);
             if (!resultado)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 response.Content = new StringContent(EngineValue.emailNoValido, Encoding.Unicode);
                 return response;
             }
@@ -120,7 +120,7 @@ namespace CoreTest.Controllers
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (user.Email == string.Empty || user.Password == string.Empty || user.NewPassword == string.Empty)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
@@ -128,7 +128,7 @@ namespace CoreTest.Controllers
             bool resultado = Metodo.PutPasswordUser(user,context);
             if (!resultado)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 response.Content = new StringContent(EngineValue.noExisteUsuario, Encoding.Unicode);
                 return response;
             }
@@ -146,7 +146,7 @@ namespace CoreTest.Controllers
             HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
             if (user.Email == string.Empty || user.Password == string.Empty)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotImplemented);
+                response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
@@ -154,7 +154,7 @@ namespace CoreTest.Controllers
             bool resultado = Metodo.DeleteUser(user, context);
             if (!resultado)
             {
-                response = new HttpResponseMessage(HttpStatusCode.NotAcceptable);
+                response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
                 response.Content = new StringContent(EngineValue.noExisteUsuario, Encoding.Unicode);
                 return response;
             }
