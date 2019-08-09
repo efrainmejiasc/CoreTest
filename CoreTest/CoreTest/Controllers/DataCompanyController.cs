@@ -63,8 +63,8 @@ namespace CoreTest.Controllers
                 return response;
             }
             EngineDb Metodo = new EngineDb();
-            List<Company> client = new List<Company>();
-            client[0] = Metodo.GetClient(NameCompany, context);
+            Company client = new Company();
+            client = Metodo.GetClient(NameCompany, context);
             if (client == null)
                 return response;
 
