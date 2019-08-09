@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace CoreTestLogical
 {
-    public class EngineLogical
+    public class EngineLogical: IEngineLogical
     {
         public string ConvertirBase64(string cadena)
         {

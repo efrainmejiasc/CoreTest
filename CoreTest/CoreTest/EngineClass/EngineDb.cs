@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CoreTest.EngineClass
 {
-    public class EngineDb 
+    public class EngineDb : IEngineDb
     {
         public bool UserCreate (UserApi user , EngineContext context)
         {

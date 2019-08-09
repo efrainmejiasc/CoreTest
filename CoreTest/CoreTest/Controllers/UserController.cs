@@ -24,10 +24,14 @@ namespace CoreTest.Controllers
     public class UserController : ControllerBase
     {
         private readonly EngineContext context;
+        private IEngineDb Metodo;
+        private IEngineLogical Funcion;
 
-        public UserController(EngineContext _context)
+        public UserController(EngineContext _context, IEngineDb _Metodo,IEngineLogical _Funcion)
         {
             context = _context;
+            Metodo = _Metodo;
+            Funcion = _Funcion;
         }
 
         [AllowAnonymous]
@@ -44,7 +48,6 @@ namespace CoreTest.Controllers
                 return response;
             }
                
-            EngineLogical Funcion = new EngineLogical();
             bool resultado = false;
             resultado = Funcion.EmailEsValido(user.Email);
             if (!resultado)
@@ -53,7 +56,6 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.emailNoValido, Encoding.Unicode);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             resultado = Metodo.UserCreate(user,context);
             if (!resultado)
             {
@@ -77,8 +79,6 @@ namespace CoreTest.Controllers
         public IActionResult Login([FromBody] UserApi login)
         {
             IActionResult response = Unauthorized();
-            EngineDb Metodo = new EngineDb();
-            EngineLogical Funcion = new EngineLogical();
             string password64 = Funcion.ConvertirBase64(login.Email + login.Password);
             UserApi user = Metodo.GetUser(password64,context);
             if (user == null)
@@ -124,7 +124,6 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             bool resultado = Metodo.PutPasswordUser(user,context);
             if (!resultado)
             {
@@ -150,7 +149,6 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             bool resultado = Metodo.DeleteUser(user, context);
             if (!resultado)
             {

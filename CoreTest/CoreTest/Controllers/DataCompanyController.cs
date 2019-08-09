@@ -21,10 +21,12 @@ namespace CoreTest.Controllers
     public class DataCompanyController : ControllerBase
     {
         private readonly EngineContext context;
+        private IEngineDb Metodo;
 
-        public DataCompanyController(EngineContext _context)
+        public DataCompanyController(EngineContext _context,IEngineDb _Metodo)
         {
             context = _context;
+            Metodo = _Metodo;
         }
 
         [Authorize]
@@ -39,7 +41,7 @@ namespace CoreTest.Controllers
                 response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
+           
             bool resultado = Metodo.CreateClient(Client, context);
             if (!resultado)
             {
@@ -65,7 +67,6 @@ namespace CoreTest.Controllers
                 response = HttpStatusCode.BadRequest.ToString(); ;
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             Company client = new Company();
             client = Metodo.GetClient(NameCompany, context);
             if (client == null)
@@ -88,7 +89,6 @@ namespace CoreTest.Controllers
                 response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             bool resultado = Metodo.PutClient(client, context);
             if (!resultado)
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -109,7 +109,6 @@ namespace CoreTest.Controllers
                 response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return response;
             }
-            EngineDb Metodo = new EngineDb();
             Company client = new Company();
             bool resultado = Metodo.DeleteClient(Ide.Id, context);
             if (!resultado)
