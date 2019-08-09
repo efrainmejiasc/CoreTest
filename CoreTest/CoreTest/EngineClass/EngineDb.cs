@@ -109,14 +109,12 @@ namespace CoreTest.EngineClass
                     int id = client.Id;
                     if (client.Subsidiary.Count > 0)
                     {
-                       foreach(Subsidiary item in client.Subsidiary)
-                       {
-                            item.IdCompany = id;
-                            item.TypeSubsidiary = Funcion.TypeSubsidiary(item.AnnualGross);
+                        foreach(Subsidiary item in client.Subsidiary)
+                        {
+                            item.CompanyId = id;
                             context.Subsidiary.Add(item);
                             context.SaveChanges();
-                            //si aqui ocurre un error se debe hacer ROLLBACK TRAN en la tabla pero por custion de tiempo no lo hago
-                       }
+                        }
                     }
                 }
                 resultado = true;
@@ -134,9 +132,7 @@ namespace CoreTest.EngineClass
                 {
                     client = context.Company.Where(s => s.NameCompany == nameCompany).FirstOrDefault();
                     if (client != null)
-                    {
-                        client.Subsidiary = context.Subsidiary.Where(x => x.IdCompany == client.Id).ToList();
-                    }
+                        client.Subsidiary = context.Subsidiary.Where(s => s.CompanyId == client.Id).ToList();
                     return client;    
                 }
             }

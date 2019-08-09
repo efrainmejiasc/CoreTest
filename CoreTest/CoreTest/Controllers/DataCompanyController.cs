@@ -26,7 +26,7 @@ namespace CoreTest.Controllers
             context = _context;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpPost]
         [ActionName("CreateClient")]
         public HttpResponseMessage CreateClient ([FromBody] Company Client)
@@ -51,7 +51,7 @@ namespace CoreTest.Controllers
         }
 
 
-       // [Authorize]
+        //[Authorize]
         [HttpGet]
         [ActionName("GetClient")]
         public string  GetClient (string NameCompany)
@@ -70,7 +70,6 @@ namespace CoreTest.Controllers
 
             return JsonConvert.SerializeObject(client, Formatting.Indented);
 
-            //return response = JsonConvert.SerializeObject(client);
         }
 
     }
