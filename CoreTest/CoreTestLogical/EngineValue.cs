@@ -23,7 +23,7 @@ namespace CoreTestLogical
         public static string transaccionExitosa = "transaccion exitosa";
         public static string noExisteUsuario = "no existe usuario";
         public static string Login = "User/Login";
-        public static string Client = "DataCompany?nameCompany=";
+        public static string Client = "DataCompany/GetClient?nameCompany=";
         public static string NoData = "No Existen Registros";
     }
 }

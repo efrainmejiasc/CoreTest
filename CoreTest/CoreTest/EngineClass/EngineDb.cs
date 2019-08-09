@@ -139,5 +139,83 @@ namespace CoreTest.EngineClass
             catch { }
             return null;
         }
+
+        public bool DeleteClient (int id, EngineContext context)
+        {
+            bool resultado = false;
+            Company client = null;
+            try
+            {
+                using (context)
+                {
+                    client = context.Company.Where(s => s.Id == id).FirstOrDefault();
+                    if (client != null)
+                    {
+                        context.Company.Attach(client);
+                        context.Company.Remove(client);
+                        context.SaveChanges();
+                        client.Subsidiary = context.Subsidiary.Where(x => x.CompanyId == id).ToList();
+                        if (client.Subsidiary.Count > 0)
+                        {
+                            foreach(Subsidiary item in client.Subsidiary)
+                            {
+                                context.Subsidiary.Attach(item);
+                                context.Subsidiary.Remove(item);
+                                context.SaveChanges();
+                            }
+                        }
+                        resultado = true;
+                    }
+                }
+            }
+            catch { }
+            return resultado;
+        }
+
+
+        public bool PutClient (Company client, EngineContext context)
+        {
+            bool resultado = false;
+            EngineLogical Funcion = new EngineLogical();
+            try
+            {
+                using (context)
+                {
+                    Company C = context.Company.Where(x => x.Id == client.Id).FirstOrDefault();
+                    if (C != null)
+                    {
+                        C.NameCompany = client.NameCompany;
+                        C.BusinessBranch = client.BusinessBranch;
+                        C.Email = client.Email;
+                        C.Phone = client.Phone;
+                        C.AnnualGross = client.AnnualGross;
+                        C.TypeCompany = Funcion.TypeCompany(client.AnnualGross);
+                        context.Company.Attach(C);
+                        context.SaveChanges();
+                        if (client.Subsidiary.Count > 0)
+                        {
+                            foreach (Subsidiary item in client.Subsidiary)
+                            {
+                                Subsidiary S = context.Subsidiary.Where(s => s.Id == item.Id).FirstOrDefault();
+                                if (S != null)
+                                {
+                                    S.NameSubsidiary = item.NameSubsidiary;
+                                    S.Email = item.Email;
+                                    S.Phone = item.Phone;
+                                    S.AnnualGross = item.AnnualGross;
+                                    S.TypeSubsidiary = Funcion.TypeSubsidiary(item.AnnualGross);
+                                    context.Subsidiary.Attach(S);
+                                    context.SaveChanges();
+
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return resultado;
+        }
+
     }
 }
