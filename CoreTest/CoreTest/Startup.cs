@@ -1,5 +1,6 @@
 ﻿
 using CoreTest.EngineClass;
+using CoreTestLogical;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -36,6 +37,10 @@ namespace CoreTest
             EngineData.JwtKey = Configuration["Jwt:Key"];
             EngineData.JwtIssuer = Configuration["Jwt:Issuer"];
             EngineData.JwtAudience = Configuration["Jwt:Audience"];
+
+            //Inyeccion de Dependencias
+            services.AddSingleton<IEngineDb, EngineDb>();
+            services.AddSingleton<IEngineLogical, EngineLogical>();
 
             //EntityFramework
             services.Configure<CookiePolicyOptions>(options =>
