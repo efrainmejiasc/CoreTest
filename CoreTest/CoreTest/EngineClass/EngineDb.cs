@@ -11,12 +11,11 @@ namespace CoreTest.EngineClass
 {
     public class EngineDb : IEngineDb
     {
-        public bool UserCreate (UserApi user , EngineContext context)
+        public bool UserCreate (UserApi user , EngineContext context, IEngineLogical funcion)
         {
             bool resultado = false;
             user.CreateDate = DateTime.UtcNow;
-            EngineLogical Funcion = new EngineLogical();
-            user.Password = Funcion.ConvertirBase64(user.Email + user.Password);
+            user.Password = funcion.ConvertirBase64(user.Email + user.Password);
             try
             {
                 using (context)
@@ -30,7 +29,7 @@ namespace CoreTest.EngineClass
             return resultado;
         }
 
-        public UserApi GetUser (string password , EngineContext context)
+        public UserApi GetUser (string password , EngineContext context, IEngineLogical funcion)
         {
             UserApi user = null;
             try
@@ -46,12 +45,11 @@ namespace CoreTest.EngineClass
             return null;
         }
    
-        public bool PutPasswordUser (Client user,EngineContext context)
+        public bool PutPasswordUser (Client user,EngineContext context, IEngineLogical funcion)
         {
             bool resultado = false;
             UserApi usuarioApi = null;
-            EngineLogical Funcion = new EngineLogical();
-            string password64 = Funcion.ConvertirBase64(user.Email + user.Password);
+            string password64 = funcion.ConvertirBase64(user.Email + user.Password);
             try
             {
                 using (context)
@@ -59,7 +57,7 @@ namespace CoreTest.EngineClass
                     usuarioApi = context.UserApi.Where(s => s.Password == password64).FirstOrDefault();
                     if(usuarioApi != null)
                     {
-                        string newPassword64 = Funcion.ConvertirBase64(user.Email + user.NewPassword);
+                        string newPassword64 = funcion.ConvertirBase64(user.Email + user.NewPassword);
                         usuarioApi.Password = newPassword64;
                         context.SaveChanges();
                         resultado = true;
@@ -70,12 +68,11 @@ namespace CoreTest.EngineClass
             return resultado;
         }
 
-        public bool DeleteUser(UserApi user, EngineContext context)
+        public bool DeleteUser(UserApi user, EngineContext context,  IEngineLogical funcion)
         {
             bool resultado = false;
             UserApi usuarioApi = null;
-            EngineLogical Funcion = new EngineLogical();
-            string password = Funcion.ConvertirBase64(user.Email + user.Password);
+            string password = funcion.ConvertirBase64(user.Email + user.Password);
             try
             {
                 using (context)
@@ -94,12 +91,11 @@ namespace CoreTest.EngineClass
             return resultado;
         }
 
-        public bool CreateClient (Company client , EngineContext context)
+        public bool CreateClient (Company client , EngineContext context, IEngineLogical funcion)
         {
             bool resultado = false;
-            EngineLogical Funcion = new EngineLogical();
             client.CreateDate = DateTime.UtcNow;
-            client.TypeCompany = Funcion.TypeCompany(client.AnnualGross);
+            client.TypeCompany = funcion.TypeCompany(client.AnnualGross);
             try
             {
                 using (context)
@@ -173,10 +169,9 @@ namespace CoreTest.EngineClass
         }
 
 
-        public bool PutClient (Company client, EngineContext context)
+        public bool PutClient (Company client, EngineContext context, IEngineLogical funcion)
         {
             bool resultado = false;
-            EngineLogical Funcion = new EngineLogical();
             try
             {
                 using (context)
@@ -189,7 +184,7 @@ namespace CoreTest.EngineClass
                         C.Email = client.Email;
                         C.Phone = client.Phone;
                         C.AnnualGross = client.AnnualGross;
-                        C.TypeCompany = Funcion.TypeCompany(client.AnnualGross);
+                        C.TypeCompany = funcion.TypeCompany(client.AnnualGross);
                         context.Company.Attach(C);
                         context.SaveChanges();
                         if (client.Subsidiary.Count > 0)
@@ -203,7 +198,7 @@ namespace CoreTest.EngineClass
                                     S.Email = item.Email;
                                     S.Phone = item.Phone;
                                     S.AnnualGross = item.AnnualGross;
-                                    S.TypeSubsidiary = Funcion.TypeSubsidiary(item.AnnualGross);
+                                    S.TypeSubsidiary = funcion.TypeSubsidiary(item.AnnualGross);
                                     context.Subsidiary.Attach(S);
                                     context.SaveChanges();
 

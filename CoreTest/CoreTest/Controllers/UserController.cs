@@ -56,7 +56,7 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.emailNoValido, Encoding.Unicode);
                 return response;
             }
-            resultado = Metodo.UserCreate(user,context);
+            resultado = Metodo.UserCreate(user,context,Funcion);
             if (!resultado)
             {
                 response.Content = new StringContent(EngineValue.falloCrearUsuario, Encoding.Unicode);
@@ -80,7 +80,7 @@ namespace CoreTest.Controllers
         {
             IActionResult response = Unauthorized();
             string password64 = Funcion.ConvertirBase64(login.Email + login.Password);
-            UserApi user = Metodo.GetUser(password64,context);
+            UserApi user = Metodo.GetUser(password64,context,Funcion);
             if (user == null)
                 return response;
 
@@ -124,7 +124,7 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
-            bool resultado = Metodo.PutPasswordUser(user,context);
+            bool resultado = Metodo.PutPasswordUser(user,context,Funcion);
             if (!resultado)
             {
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -149,7 +149,7 @@ namespace CoreTest.Controllers
                 response.Content = new StringContent(EngineValue.modeloImcompleto, Encoding.Unicode);
                 return response;
             }
-            bool resultado = Metodo.DeleteUser(user, context);
+            bool resultado = Metodo.DeleteUser(user, context,Funcion);
             if (!resultado)
             {
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);

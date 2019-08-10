@@ -22,11 +22,13 @@ namespace CoreTest.Controllers
     {
         private readonly EngineContext context;
         private IEngineDb Metodo;
+        private IEngineLogical Funcion;
 
-        public DataCompanyController(EngineContext _context,IEngineDb _Metodo)
+        public DataCompanyController(EngineContext _context,IEngineDb _Metodo,IEngineLogical _Funcion)
         {
             context = _context;
             Metodo = _Metodo;
+            Funcion = _Funcion;
         }
 
         [Authorize]
@@ -42,7 +44,7 @@ namespace CoreTest.Controllers
                 return response;
             }
            
-            bool resultado = Metodo.CreateClient(Client, context);
+            bool resultado = Metodo.CreateClient(Client, context,Funcion);
             if (!resultado)
             {
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
@@ -89,7 +91,7 @@ namespace CoreTest.Controllers
                 response = new HttpResponseMessage(HttpStatusCode.BadRequest);
                 return response;
             }
-            bool resultado = Metodo.PutClient(client, context);
+            bool resultado = Metodo.PutClient(client, context,Funcion);
             if (!resultado)
                 response = new HttpResponseMessage(HttpStatusCode.InternalServerError);
 
