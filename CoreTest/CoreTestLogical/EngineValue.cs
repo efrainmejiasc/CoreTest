@@ -22,7 +22,7 @@ namespace CoreTestLogical
         public static string falloCrearUsuario = "error al crear usuario";
         public static string transaccionExitosa = "transaccion exitosa";
         public static string noExisteUsuario = "no existe usuario";
-        public static string Login = "User/Login";
+        public static string Login = "api/User/Login";
         public static string Client = "DataCompany/GetClient?nameCompany=";
         public static string NoData = "No Existen Registros";
     }
