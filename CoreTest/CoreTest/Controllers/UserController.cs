@@ -76,7 +76,7 @@ namespace CoreTest.Controllers
         [HttpPost]
         [ActionName("Login")]
         [Route("Login")]
-        public IActionResult Login([FromBody] UserApi login)
+        public IActionResult Login([FromBody] Client login)
         {
             IActionResult response = Unauthorized();
             string password64 = Funcion.ConvertirBase64(login.Email + login.Password);
