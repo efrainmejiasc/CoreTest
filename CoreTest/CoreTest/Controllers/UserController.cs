@@ -111,6 +111,7 @@ namespace CoreTest.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+
         [Authorize]
         [HttpPut]
         [ActionName("UpdateUser")]
@@ -135,6 +136,7 @@ namespace CoreTest.Controllers
             response.Content = new StringContent(EngineValue.transaccionExitosa, Encoding.Unicode);
             return response;
         }
+
 
         [Authorize]
         [HttpDelete]
